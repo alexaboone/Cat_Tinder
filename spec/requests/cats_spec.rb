@@ -33,4 +33,21 @@ describe "Cats API" do
 
     expect(new_cat.name).to eq('Buster')
   end
+
+  it "doesn't create a cat without a name, age, and city" do
+    cat_params = {
+      cat: {
+        enjoys: 'long walks without a leash'
+      }
+    }
+
+    post '/cats', params: cat_params
+
+    expect(response.status).to eq 422
+
+    json = JSON.parse(response.body)
+
+    expect(json['name']).to include "can't be blank"
+  end
+
 end
